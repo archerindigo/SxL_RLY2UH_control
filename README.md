@@ -21,6 +21,8 @@ Turn off relay 2 after 30 seconds:
 
 ## Demo
 
+![USB lamp connected to RLY2UH](demo/USB_Lamp.JPG)
+
 Remote control an USB lamp via SSH on mobile phone: https://www.youtube.com/watch?v=FLi56sj9ToY
 
 ## Purchase
