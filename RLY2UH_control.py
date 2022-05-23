@@ -12,19 +12,22 @@ def usage():
     print("Usage:")
     print("%s -r <1|2> [-t <s>] [-lh] <on|off>" % sys.argv[0])
     print("\t-r <1|2>\t: select relay 1 or 2")
-    print("\t<on|off|\t: turn on / off the relay")
+    print("\t<on|off|toggle>\t: turn on / off the relay")
     print("\t-l\t\t: use active LOW logic")
     print("\t-t <s>\t: delay the operation by s seconds")
     print("\t-h\t\t: show this help")
 
-def relay_control(relay_pin, active_high, on):
+def relay_control(relay_pin, active_high, action):
     GPIO.setup(relay_pin, GPIO.OUT)     # set the pin to output
 
     # Output signal to the pin
-    if on == True:
-        GPIO.output(relay_pin, active_high)     # if active_high == True, we should output HIGH (True)
-    else:
-        GPIO.output(relay_pin, not active_high) # if active_high == False, we should output LOW (False)
+    if action == 0:
+        GPIO.output(relay_pin, not active_high)     # if active_high == True, we should output LOW
+    elif action == 1:
+        GPIO.output(relay_pin, active_high)         # if active_high == False, we should output HIGH
+    else:   # toggle
+        state = GPIO.input(relay_pin)
+        GPIO.output(relay_pin, not state)
 
 if __name__ == "__main__":
 
@@ -65,9 +68,11 @@ if __name__ == "__main__":
 
     # Control the relay based on input arguments
     if args[0] == "on":
-        relay_control(target_relay, active_high, True)
+        relay_control(target_relay, active_high, 1)
     elif args[0] == "off":
-        relay_control(target_relay, active_high, False)
+        relay_control(target_relay, active_high, 0)
+    elif args[0] == "toggle":
+        relay_control(target_relay, active_high, 2)
     else:
         print("Unknown operation!")
         usage()
